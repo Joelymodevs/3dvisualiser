@@ -29,9 +29,25 @@ const startApp = () => {
   const ambientLight = new THREE.AmbientLight('#ffffff', 0.5)
   scene.add(dirLight, ambientLight)
 
-  const geometry = new THREE.IcosahedronGeometry()
-  const material = new THREE.MeshStandardMaterial({
-    color: '#4e62f9',
+
+
+
+
+
+
+
+
+
+
+
+
+  const geometry = new THREE.SphereGeometry(1, 100, 100)
+  const material = new THREE.ShaderMaterial({
+    vertexShader: vertexShader,
+    fragmentShader: fragmentShader,
+    uniforms: {
+      uTime: {value: 0}
+    }
   })
   const ico = new THREE.Mesh(geometry, material)
   scene.add(ico)
@@ -65,13 +81,10 @@ const startApp = () => {
   addPass(savePass)
   addPass(outputPass)
 
-  const animateIco = () => {
-    ico.rotation.x += ROTATION_SPEED
-    ico.rotation.y += ROTATION_SPEED
-  }
+  
 
   useTick(({ timestamp, timeDiff }) => {
-    animateIco()
+    material.uniforms.uTime.value = timestamp / 1000
   })
 }
 
